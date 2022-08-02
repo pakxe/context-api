@@ -1,4 +1,4 @@
-import { motion, useMotionValue } from "framer-motion";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import styled from "styled-components";
 import React, { useRef, useEffect } from "react";
 
@@ -7,7 +7,7 @@ const BoxAnimation = {
   click: { scale: 1, borderRadius: "50%", backgroundColor: "#8fd3f4" },
 };
 
-const Background = styled.div`
+const Background = styled(motion.div)`
   background: linear-gradient(45deg, #84fab0, #8fd3f4);
   width: 100vw;
   height: 100vh;
@@ -26,13 +26,18 @@ const Box = styled(motion.div)`
 
 function App() {
   const x = useMotionValue(0);
-  useEffect(() => {
-    x.onChange(() => {
-      console.log(x.get());
-    });
-  }, [x]);
+  const gradient = useTransform(
+    x,
+    [-800, 0, 800],
+    [
+      "linear-gradient(45deg, #ff9a9e, #fad0c4)",
+      "linear-gradient(45deg, #84fab0, #8fd3f4)",
+      "linear-gradient(45deg, #a18cd1, #fbc2eb)",
+    ]
+  );
+
   return (
-    <Background>
+    <Background style={{ background: gradient }}>
       <Box drag="x" style={{ x }} dragSnapToOrigin></Box>
     </Background>
   );
