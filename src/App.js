@@ -1,7 +1,13 @@
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useTransform,
+} from "framer-motion";
 import styled from "styled-components";
 import React, { useRef, useEffect, useState } from "react";
-
+import "./style.css";
+import { toHaveAccessibleDescription } from "@testing-library/jest-dom/dist/matchers";
 const Background = styled(motion.div)`
   background: linear-gradient(45deg, #84fab0, #8fd3f4);
   width: 100vw;
@@ -11,45 +17,53 @@ const Background = styled(motion.div)`
   align-items: center;
 `;
 
-const Switch = styled(motion.div)`
-  width: 160px;
-  border-radius: 50px;
-  background-color: rgba(255, 255, 255, 0.4);
-  cursor: pointer;
-  display: flex;
-  justify-content: flex-start;
-  padding: 10px;
+const ingredients = [
+  { icon: "🍅", label: "Tomato" },
+  { icon: "🥬", label: "Lettuce" },
+  { icon: "🧀", label: "Cheese" },
+];
 
-  &[data-isOn="true"] {
-    justify-content: flex-end;
-  }
-`;
-//대괄호 안에 넣어준 것은 속성(특성) 선택자임
-
-const Handle = styled(motion.div)`
-  height: 80px;
-  width: 80px;
-  border-radius: 40px;
-  background-color: white;
-`;
+const [tomato, lettuce, cheese] = ingredients;
+const tabs = [tomato, lettuce, cheese];
 
 function App() {
-  const [isOn, setIsOn] = useState(false);
-
-  const toggleSwitch = () => setIsOn(!isOn);
+  const [selectedTab, setSelectedTab] = useState(tabs[0]);
 
   return (
     <Background>
-      <Switch data-isOn={isOn} onClick={toggleSwitch}>
-        <Handle layout transition={spring} />
-      </Switch>
+      <div className="window">
+        <nav>
+          <ul>
+            {tabs.map((item) => (
+              <li
+                key={item.label}
+                className={item === selectedTab ? "selected" : ""}
+                onClick={() => setSelectedTab(item)}
+              >
+                {`${item.icon} ${item.label}`}
+                {item === selectedTab ? (
+                  <motion.div className="underline" />
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <main>
+          <AnimatePresence exitBeforeEnter>
+            <motion.div
+              key={selectedTab ? selectedTab.label : "empty"}
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -10, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              {selectedTab ? selectedTab.icon : "🥨"}
+            </motion.div>
+          </AnimatePresence>
+        </main>
+      </div>
     </Background>
   );
 }
 
-const spring = {
-  stiffness: 700,
-  type: "spring",
-  damping: 30,
-};
 export default App;
