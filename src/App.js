@@ -1,11 +1,6 @@
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import styled from "styled-components";
-import React, { useRef, useEffect } from "react";
-
-const BoxAnimation = {
-  hover: { scale: 1.5, rotateZ: 90 },
-  click: { scale: 1, borderRadius: "50%", backgroundColor: "#8fd3f4" },
-};
+import React, { useRef, useEffect, useState } from "react";
 
 const Background = styled(motion.div)`
   background: linear-gradient(45deg, #84fab0, #8fd3f4);
@@ -16,31 +11,45 @@ const Background = styled(motion.div)`
   align-items: center;
 `;
 
-const Box = styled(motion.div)`
-  height: 200px;
-  width: 200px;
+const Switch = styled(motion.div)`
+  width: 160px;
+  border-radius: 50px;
+  background-color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-start;
+  padding: 10px;
+
+  &[data-isOn="true"] {
+    justify-content: flex-end;
+  }
+`;
+//대괄호 안에 넣어준 것은 속성(특성) 선택자임
+
+const Handle = styled(motion.div)`
+  height: 80px;
+  width: 80px;
   border-radius: 40px;
-  background-color: rgba(255, 255, 255, 1);
-  box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.1);
+  background-color: white;
 `;
 
 function App() {
-  const x = useMotionValue(0);
-  const gradient = useTransform(
-    x,
-    [-800, 0, 800],
-    [
-      "linear-gradient(45deg, #ff9a9e, #fad0c4)",
-      "linear-gradient(45deg, #84fab0, #8fd3f4)",
-      "linear-gradient(45deg, #a18cd1, #fbc2eb)",
-    ]
-  );
+  const [isOn, setIsOn] = useState(false);
+
+  const toggleSwitch = () => setIsOn(!isOn);
 
   return (
-    <Background style={{ background: gradient }}>
-      <Box drag="x" style={{ x }} dragSnapToOrigin></Box>
+    <Background>
+      <Switch data-isOn={isOn} onClick={toggleSwitch}>
+        <Handle layout transition={spring} />
+      </Switch>
     </Background>
   );
 }
 
+const spring = {
+  stiffness: 700,
+  type: "spring",
+  damping: 30,
+};
 export default App;
