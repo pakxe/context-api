@@ -7,7 +7,7 @@ import {
 import styled from "styled-components";
 import React, { useRef, useEffect, useState } from "react";
 import "./style.css";
-import { toHaveAccessibleDescription } from "@testing-library/jest-dom/dist/matchers";
+
 const Background = styled(motion.div)`
   background: linear-gradient(45deg, #84fab0, #8fd3f4);
   width: 100vw;
@@ -17,53 +17,42 @@ const Background = styled(motion.div)`
   align-items: center;
 `;
 
-const ingredients = [
-  { icon: "🍅", label: "Tomato" },
-  { icon: "🥬", label: "Lettuce" },
-  { icon: "🧀", label: "Cheese" },
-];
-
-const [tomato, lettuce, cheese] = ingredients;
-const tabs = [tomato, lettuce, cheese];
-
+const Box = styled(motion.div)`
+  width: 400px;
+  height: 200px;
+  background-color: white;
+  border-radius: 40px;
+  position: absolute;
+  top: 100px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+`;
 function App() {
-  const [selectedTab, setSelectedTab] = useState(tabs[0]);
+  const [showing, setShowing] = useState(false);
+  const toggleHandler = () => {
+    setShowing(!showing);
+  };
 
   return (
     <Background>
-      <div className="window">
-        <nav>
-          <ul>
-            {tabs.map((item) => (
-              <li
-                key={item.label}
-                className={item === selectedTab ? "selected" : ""}
-                onClick={() => setSelectedTab(item)}
-              >
-                {`${item.icon} ${item.label}`}
-                {item === selectedTab ? (
-                  <motion.div className="underline" />
-                ) : null}
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <main>
-          <AnimatePresence exitBeforeEnter>
-            <motion.div
-              key={selectedTab ? selectedTab.label : "empty"}
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -10, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              {selectedTab ? selectedTab.icon : "🥨"}
-            </motion.div>
-          </AnimatePresence>
-        </main>
-      </div>
+      <button onClick={toggleHandler}>Click me</button>
+      <AnimatePresence>
+        {showing ? (
+          <Box
+            variants={boxVariants}
+            initial="initial"
+            animate="visible"
+            exit="leaving"
+          />
+        ) : null}
+      </AnimatePresence>
     </Background>
   );
 }
+
+const boxVariants = {
+  initial: { opacity: 0, scale: 0 },
+  visible: { opacity: 1, scale: 1 },
+  leaving: { opacity: 0, scale: 0, y: 50 },
+};
 
 export default App;
