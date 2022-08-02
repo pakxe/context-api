@@ -1,6 +1,6 @@
-import { motion } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 import styled from "styled-components";
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 
 const BoxAnimation = {
   hover: { scale: 1.5, rotateZ: 90 },
@@ -24,31 +24,16 @@ const Box = styled(motion.div)`
   box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.1);
 `;
 
-const BiggerBox = styled.div`
-  width: 600px;
-  height: 600px;
-  background-color: rgba(255, 255, 255, 0.4);
-  border-radius: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 function App() {
-  const biggerBoxRef = useRef(null);
-
+  const x = useMotionValue(0);
+  useEffect(() => {
+    x.onChange(() => {
+      console.log(x.get());
+    });
+  }, [x]);
   return (
     <Background>
-      <BiggerBox ref={biggerBoxRef}>
-        <Box
-          drag
-          dragSnapToOrigin
-          dragElastic={0.3}
-          dragConstraints={biggerBoxRef}
-          whileHover="hover"
-          whileTap="click"
-          variants={BoxAnimation}
-        ></Box>
-      </BiggerBox>
+      <Box drag="x" style={{ x }} dragSnapToOrigin></Box>
     </Background>
   );
 }
