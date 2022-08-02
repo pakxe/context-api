@@ -3,7 +3,7 @@ import styled from "styled-components";
 import React, { useRef, useEffect, useState } from "react";
 
 const Background = styled(motion.div)`
-  background: linear-gradient(45deg, #2af598, #009efd);
+  background: linear-gradient(45deg, #84fab0, #8fd3f4);
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -11,41 +11,45 @@ const Background = styled(motion.div)`
   align-items: center;
 `;
 
-const Parent = styled(motion.div)`
-  width: 100px;
-  height: 100px;
+const Switch = styled(motion.div)`
+  width: 160px;
+  border-radius: 50px;
+  background-color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: white;
+  justify-content: flex-start;
+  padding: 10px;
 
-  &[data-isOpen="true"] {
-    width: 400px;
-    height: 200px;
+  &[data-isOn="true"] {
+    justify-content: flex-end;
   }
 `;
+//대괄호 안에 넣어준 것은 속성(특성) 선택자임
 
-const Child = styled(motion.div)`
-  width: 40px;
-  height: 40px;
-  background: #f107a3;
-  border-radius: 50%;
+const Handle = styled(motion.div)`
+  height: 80px;
+  width: 80px;
+  border-radius: 40px;
+  background-color: white;
 `;
+
 function App() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOn, setIsOn] = useState(false);
+
+  const toggleSwitch = () => setIsOn(!isOn);
 
   return (
     <Background>
-      <Parent
-        layout
-        data-isOpen={isOpen}
-        onClick={() => setIsOpen(!isOpen)}
-        initial={{ borderRadius: 50 }}
-      >
-        <Child layout />
-      </Parent>
+      <Switch data-isOn={isOn} onClick={toggleSwitch}>
+        <Handle layout transition={spring} />
+      </Switch>
     </Background>
   );
 }
 
+const spring = {
+  stiffness: 700,
+  type: "spring",
+  damping: 30,
+};
 export default App;
