@@ -3,20 +3,19 @@ import styled from "styled-components";
 import React from "react";
 
 const BoxAnimation = {
-  start: { scale: 0, opacity: 0.5 }, // initial stage
+  start: { scale: 0, opacity: 0.5 },
   end: {
     scale: 1,
     opacity: 1,
     rotateZ: 360,
     transition: {
-      delay: 1,
       duration: 3.5,
       type: "spring",
-      stiffness: 130,
-      delayChildren: 3,
+      stiffness: 110,
+      delayChildren: 2,
       staggerChildren: 0.5,
     },
-  }, // finishing stage
+  },
 };
 
 const InnerAnimation = {
