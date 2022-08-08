@@ -1,16 +1,16 @@
 import styled from "styled-components";
 import React, { useRef, useEffect, useState } from "react";
-import HomePage from "./home.page";
-import Modal from "./modal.component";
-import { ModalProvider2 } from "./ModalContext2";
+import { ModalProvider } from "./ModalContext";
+import HomePage from "./HomePage";
+import Modal from "./Modal";
 
 function App() {
   return (
     <>
-      <ModalProvider2>
+      <ModalProvider>
         <HomePage />
         <Modal />
-      </ModalProvider2>
+      </ModalProvider>
     </>
   );
 }

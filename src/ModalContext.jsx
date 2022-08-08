@@ -1,13 +1,15 @@
-import React, { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
+import { useState } from "react";
 
-//context
+//createContext
 const ModalContext = createContext({});
-//Provider
-const ModalProvider = ({ children }) => {
-  const [modalState, setState] = useState({ visible: false });
 
-  const openModal = () => setState({ visible: true });
-  const closeModal = () => setState({ visible: false });
+//Provider설정
+const ModalProvider = ({ children }) => {
+  const [modalState, setModalState] = useState({ visible: false });
+
+  const openModal = (payload) => setModalState({ ...payload, visible: true });
+  const closeModal = () => setModalState({ visible: false });
 
   return (
     <ModalContext.Provider value={{ modalState, openModal, closeModal }}>
@@ -15,7 +17,8 @@ const ModalProvider = ({ children }) => {
     </ModalContext.Provider>
   );
 };
-//hook
+
+//hooks
 const useModalContext = () => {
   const context = useContext(ModalContext);
   return context;
