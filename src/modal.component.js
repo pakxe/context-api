@@ -1,15 +1,17 @@
 import React from "react";
 import { Modal as ModalComponent } from "antd";
 import { useModalContext } from "./modal.context";
+import { useModalContext2 } from "./ModalContext2";
 
 const Modal = () => {
   const {
-    modalState: { message, visible },
+    modalState: { inner, visible },
     closeModal,
-  } = useModalContext();
+  } = useModalContext2();
+
   return (
     <ModalComponent onCancel={closeModal} onOk={closeModal} visible={visible}>
-      <p>{message}</p>
+      <p>{inner}</p>
     </ModalComponent>
   );
 };

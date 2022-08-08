@@ -6,8 +6,8 @@ const ModalContext = createContext({});
 const ModalProvider = ({ children }) => {
   const [modalState, setState] = useState({ visible: false });
 
-  const openModal = (payload) => setState({ ...payload, visible: true });
-  const closeModal = (payload) => setState({ visible: false });
+  const openModal = () => setState({ visible: true });
+  const closeModal = () => setState({ visible: false });
 
   return (
     <ModalContext.Provider value={{ modalState, openModal, closeModal }}>
